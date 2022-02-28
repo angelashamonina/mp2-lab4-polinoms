@@ -5,31 +5,26 @@ Monom Monom::operator+(const Monom& m)
 	if (deg == m.deg)
 	{
 		Monom res(cf + m.cf, deg);
-
 		return res;
 	}
 	else
 	{
-		throw "You degrees aren`t equal";
+		throw "You degrees aren't equal";
 	}
 }
 Monom Monom::operator*(const Monom& m)
 {
 	Monom res;
 	int x, y, z;
-
 	res.cf = cf * m.cf;
 	res.deg = deg + m.deg;
-
 	x = deg / 100 + m.deg / 100;
 	y = deg % 100 / 10 + m.deg % 100 / 10;
 	z = deg % 10 + m.deg % 10;
 	if ((x > 9) || (y > 9) || (z > 9))
 	{
 		throw "A * B:You have wrong degree in polinom";
-
 	}
-
 	return res;
 }
 Monom& Monom::operator=(const Monom& m)
@@ -46,12 +41,13 @@ bool Monom:: operator==(const Monom& m) const
 		return (true);
 	}
 	else
+	{
 		return(false);
+	}
 
 }
 bool Monom::operator<(const Monom& m)const
 {
-
 	return(deg < m.deg);
 }
 bool Monom:: operator>(const  Monom& m)const
@@ -65,20 +61,19 @@ bool Monom:: operator!= (const Monom& m)const
 		return (true);
 	}
 	else
+	{
 		return(false);
+	}
 }
 
 
 void Polinom::simplification()
 {
 	Node<Monom>* tmp1 = polinom.get_head();
-	Node<Monom>* tmp3 = polinom.get_head();
 	Node<Monom>* tmp2;
-	double eps = 1e-10;
-
 	while (tmp1 != nullptr)
 	{
-		if (abs(tmp1->data.cf) < eps)
+		if (abs(tmp1->data.cf) < 1e-10)
 		{
 			tmp2 = tmp1->next;
 			Delete(tmp1);
@@ -86,7 +81,7 @@ void Polinom::simplification()
 		}
 		else
 		{
-			if (tmp1->next != nullptr && tmp1->next->data.deg == tmp1->data.deg)
+			if (tmp1->next != nullptr && (tmp1->next->data.deg == tmp1->data.deg))
 			{
 				tmp1->data.cf += tmp1->next->data.cf;
 				Delete(tmp1->next);
@@ -102,26 +97,23 @@ void Polinom::simplification()
 }
 void Polinom::SetPolinom()
 {
-	int count_m;
-	int tdeg = 1;
+	int count;
+	int tdeg;
 	double tcf;
 	Monom m;
-
 	cout << endl << "Enter monoms count: ";
-	cin >> count_m;
-	for (int i = 0; i < count_m; i++)
+	cin >> count;
+	for (int i = 0; i < count; i++)
 	{
 		cout << "Enter monom coefficient: ";
 		cin >> tcf;
 		cout << "Enter monom degree : ";
 		cin >> tdeg;
-
 		while ((tdeg > 999) || (tdeg < 0))
 		{
 			cout << "Your degree is error(>999 or <0). Try again: " << endl;
 			cin >> tdeg;
 		}
-
 		if (tcf != 0)
 		{
 			Monom m1(tcf, tdeg);
@@ -135,7 +127,6 @@ void Polinom::SetPolinom()
 Polinom& Polinom::operator=(List<Monom>& p)
 {
 	List<Monom>::operator=(p);
-
 	return(*this);
 }
 Polinom& Polinom::operator+(const Polinom& p)
@@ -215,19 +206,15 @@ Polinom& Polinom::operator*(double _const)
 		Monom m1(0, 0);
 		m = m1;
 		res.polinom.Insert(m);
-
 	}
-
 	return res;
 }
 Polinom& Polinom::operator-(Polinom& p)
 {
 	Polinom tmp;
 	Polinom res;
-
 	tmp = (p * (-1));
 	res = *this + tmp;
-
 	return res;
 }
 Polinom Polinom::operator *(Polinom& p)
@@ -252,8 +239,6 @@ Polinom Polinom::operator *(Polinom& p)
 
 		tmp1 = tmp1->next;
 	}
-
 	res.simplification();
-
 	return res;
 }
